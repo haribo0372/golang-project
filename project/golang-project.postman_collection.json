@@ -1,0 +1,179 @@
+{
+	"info": {
+		"_postman_id": "b7da571f-defc-42e1-a53a-65c104cf0f0e",
+		"name": "golang-project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26081744"
+	},
+	"item": [
+		{
+			"name": "Registration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonResponse = pm.response.json();\r",
+							"let jsonRequest = pm.request.body.raw;\r",
+							"console.log(\"Request : \" + jsonRequest);\r",
+							"console.log(\"Response : \" + jsonResponse);\r",
+							"\r",
+							"\r",
+							"pm.test(\"Статус ответа 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"{{username}}\",\r\n    \"password\" : \"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/register",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonResponse = pm.response.json();\r",
+							"let jsonRequest = pm.request.body.raw;\r",
+							"console.log(\"Request : \" + jsonRequest);\r",
+							"console.log(\"Response : \" + jsonResponse);\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"Статус ответа 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Ответ содержит Jwt-токен\", function () {\r",
+							"    pm.expect(jsonResponse).to.have.property('token');\r",
+							"});\r",
+							"\r",
+							"let jwt_token = jsonResponse.token;\r",
+							"\r",
+							"pm.environment.set(\"jwt_token\", jwt_token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"{{username}}\",\r\n    \"password\" : \"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Moscow weather",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonResponse = pm.response.json();\r",
+							"let jsonRequest = pm.request.body.raw;\r",
+							"console.log(\"Request : \" + jsonRequest);\r",
+							"console.log(\"Response : \" + jsonResponse);\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"Статус ответа 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Ответ содержит параметры\", function () {\r",
+							"    let params = [\r",
+							"        \"city\",\r",
+							"        \"feels_like_temperature\",\r",
+							"        \"max_temperature\",\r",
+							"        \"min_temperature\",\r",
+							"        \"temperature\",\r",
+							"        \"visibility\",\r",
+							"        \"weather_description\",\r",
+							"        \"wind_gust\",\r",
+							"        \"wind_speed\"\r",
+							"    ]\r",
+							"\r",
+							"    for (let i=0; i< params.length; i++){\r",
+							"        pm.expect(jsonResponse).to.have.property(params[i]);\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/weather?s_city=Moscow,RU",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"weather"
+					],
+					"query": [
+						{
+							"key": "s_city",
+							"value": "Moscow,RU"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
